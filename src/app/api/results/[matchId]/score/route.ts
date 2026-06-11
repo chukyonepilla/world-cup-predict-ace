@@ -2,8 +2,9 @@ import { createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
 import { scoreMatch } from '@/lib/scoring/engine'
 
-export async function POST(request: Request, { params }: { params: { matchId: string } }) {
+export async function POST(request: Request, { params }: { params: Promise<{ matchId: string }> }) {
   try {
+    const { matchId } = await params
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
 
@@ -22,7 +23,7 @@ export async function POST(request: Request, { params }: { params: { matchId: st
       return NextResponse.json({ error: 'Forbidden - Admin only' }, { status: 403 })
     }
 
-    const result = await scoreMatch(params.matchId)
+    const result = await scoreMatch(matchId)
 
     return NextResponse.json({ success: true, scored: result.scored })
   } catch (error: any) {

@@ -4,12 +4,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 
 interface PageProps {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
 export default async function LeagueDetailPage({ params }: PageProps) {
+  const { id } = await params
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
@@ -21,7 +22,7 @@ export default async function LeagueDetailPage({ params }: PageProps) {
   const { data: league, error: leagueError } = await supabase
     .from('leagues')
     .select('*')
-    .eq('id', params.id)
+    .eq('id', id)
     .single()
 
   if (leagueError || !league) {
@@ -32,12 +33,12 @@ export default async function LeagueDetailPage({ params }: PageProps) {
   const { data: membership } = await supabase
     .from('league_members')
     .select('*')
-    .eq('league_id', params.id)
+    .eq('league_id', id)
     .eq('user_id', user.id)
     .single()
 
   if (!membership) {
-    redirect(`/leagues/${params.id}/join`)
+    redirect(`/leagues/${id}/join`)
   }
 
   // Fetch league members
@@ -51,13 +52,13 @@ export default async function LeagueDetailPage({ params }: PageProps) {
         email
       )
     `)
-    .eq('league_id', params.id)
+    .eq('league_id', id)
 
   // Fetch league rankings
   const { data: rankings } = await supabase
     .from('rankings')
     .select('*')
-    .eq('league_id', params.id)
+    .eq('league_id', id)
     .order('total_points', { ascending: false })
 
   return (
