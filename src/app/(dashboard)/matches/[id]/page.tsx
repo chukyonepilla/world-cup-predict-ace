@@ -296,6 +296,7 @@ export default function MatchDetailPage() {
                       </SelectContent>
                     </Select>
                   </div>
+                </div>
 
                 {isKnockout && (
                   <>
