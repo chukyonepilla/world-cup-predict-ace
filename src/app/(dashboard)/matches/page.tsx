@@ -13,13 +13,13 @@ export default async function MatchesPage() {
     redirect('/login')
   }
 
-  // Fetch upcoming matches
+  // Fetch upcoming matches (still open for prediction)
   const { data: matches } = await supabase
     .from('matches')
     .select('*')
-    .gte('prediction_window_open', new Date().toISOString())
+    .gt('prediction_window_close', new Date().toISOString())
     .order('kickoff_time', { ascending: true })
-    .limit(20)
+    .limit(50)
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -45,46 +45,58 @@ export default async function MatchesPage() {
 
         {matches && matches.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {matches.map((match: any) => (
-              <Card key={match.id} className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <CardTitle className="text-lg">
-                    {match.home_team} vs {match.away_team}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    <div className="flex justify-between text-sm text-gray-600">
-                      <span>Stage: {match.stage}</span>
-                      <span>{new Date(match.kickoff_time).toLocaleDateString()}</span>
+            {matches.map((match: any) => {
+              const timeUntilClose = new Date(match.prediction_window_close).getTime() - new Date().getTime()
+              const minutesUntilClose = Math.floor(timeUntilClose / (1000 * 60))
+              const hoursUntilClose = Math.floor(minutesUntilClose / 60)
+
+              return (
+                <Card key={match.id} className="hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <CardTitle className="text-lg">
+                      {match.home_team} vs {match.away_team}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <div className="flex justify-between text-sm text-gray-600">
+                        <span>Stage: {match.stage}</span>
+                        <span>Group: {match.group_label}</span>
+                      </div>
+                      <div className="text-sm text-gray-600">
+                        {new Date(match.kickoff_time).toLocaleDateString()} at{' '}
+                        {new Date(match.kickoff_time).toLocaleTimeString([], {
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        })}
+                      </div>
+                      {match.venue && (
+                        <div className="text-sm text-gray-600">{match.venue}</div>
+                      )}
+                      <div className="pt-3 border-t">
+                        <div className="text-sm text-orange-600 mb-2">
+                          {hoursUntilClose > 0
+                            ? `Closes in ${hoursUntilClose}h ${minutesUntilClose % 60}m`
+                            : `Closes in ${minutesUntilClose}m`}
+                        </div>
+                        <Link
+                          href={`/matches/${match.id}`}
+                          className="block w-full bg-green-600 text-white text-center py-2 rounded hover:bg-green-700 transition-colors"
+                        >
+                          Make Prediction
+                        </Link>
+                      </div>
                     </div>
-                    <div className="text-sm text-gray-600">
-                      {new Date(match.kickoff_time).toLocaleTimeString([], {
-                        hour: '2-digit',
-                        minute: '2-digit',
-                      })}
-                    </div>
-                    {match.venue && (
-                      <div className="text-sm text-gray-600">{match.venue}</div>
-                    )}
-                    <div className="pt-3 border-t">
-                      <Link
-                        href={`/matches/${match.id}`}
-                        className="block w-full bg-green-600 text-white text-center py-2 rounded hover:bg-green-700 transition-colors"
-                      >
-                        Make Prediction
-                      </Link>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                  </CardContent>
+                </Card>
+              )
+            })}
           </div>
         ) : (
           <Card>
             <CardContent className="text-center py-12">
-              <p className="text-gray-600 mb-4">No upcoming matches available</p>
-              <p className="text-sm text-gray-500">Check back later for new fixtures</p>
+              <p className="text-gray-600 mb-4">No matches available for prediction</p>
+              <p className="text-sm text-gray-500">All matches have either started or prediction windows have closed</p>
             </CardContent>
           </Card>
         )}

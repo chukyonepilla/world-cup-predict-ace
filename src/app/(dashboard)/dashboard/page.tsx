@@ -26,6 +26,19 @@ export default async function DashboardPage() {
     .select('*', { count: 'exact', head: true })
     .eq('league_id', GLOBAL_LEAGUE_ID)
 
+  // Fetch today's matches (still open for prediction)
+  const today = new Date()
+  const startOfDay = new Date(today.setHours(0, 0, 0, 0)).toISOString()
+  const endOfDay = new Date(today.setHours(23, 59, 59, 999)).toISOString()
+
+  const { data: todayMatches } = await supabase
+    .from('matches')
+    .select('*')
+    .gte('kickoff_time', startOfDay)
+    .lte('kickoff_time', endOfDay)
+    .gt('prediction_window_close', new Date().toISOString())
+    .order('kickoff_time', { ascending: true })
+
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-green-800 text-white shadow">
@@ -78,13 +91,48 @@ export default async function DashboardPage() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="bg-white rounded-lg shadow p-6">
+            <h3 className="text-xl font-semibold text-gray-900 mb-4">Today's Matches</h3>
+            {todayMatches && todayMatches.length > 0 ? (
+              <div className="space-y-3">
+                {todayMatches.map((match: any) => (
+                  <Link key={match.id} href={`/matches/${match.id}`}>
+                    <div className="border rounded-lg p-4 hover:bg-gray-50 transition-colors cursor-pointer">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm text-gray-600">{match.group_label}</span>
+                        <span className="text-sm text-gray-600">
+                          {new Date(match.kickoff_time).toLocaleTimeString([], {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                          })}
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="font-medium">{match.home_team}</span>
+                        <span className="text-gray-400">vs</span>
+                        <span className="font-medium">{match.away_team}</span>
+                      </div>
+                      {match.venue && (
+                        <p className="text-xs text-gray-500 mt-2">{match.venue}</p>
+                      )}
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <p className="text-gray-600 text-center py-4">No matches available for prediction today</p>
+            )}
+          </div>
+
           <Link href="/matches">
             <div className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer">
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Upcoming Matches</h3>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">All Matches</h3>
               <p className="text-gray-600">View all World Cup matches and make your predictions</p>
             </div>
           </Link>
+        </div>
 
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
           <Link href="/leagues/00000000-0000-0000-0000-000000000001">
             <div className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer">
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Leaderboard</h3>
