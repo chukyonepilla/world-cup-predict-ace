@@ -118,5 +118,49 @@ INSERT INTO matches (home_team, away_team, kickoff_time, stage, group_label, ven
 ('England', 'Ghana', '2026-06-23 20:00:00+00', 'group', 'L', 'Gillette Stadium, Boston', '2026-06-23 19:30:00+00', '2026-06-23 20:00:00+00'),
 ('Panama', 'Croatia', '2026-06-23 23:00:00+00', 'group', 'L', 'BMO Field, Toronto', '2026-06-23 22:30:00+00', '2026-06-23 23:00:00+00'),
 ('Panama', 'England', '2026-06-27 21:00:00+00', 'group', 'L', 'MetLife Stadium, New York/New Jersey', '2026-06-27 20:30:00+00', '2026-06-27 21:00:00+00'),
-('Croatia', 'Ghana', '2026-06-27 21:00:00+00', 'group', 'L', 'Lincoln Financial Field, Philadelphia', '2026-06-27 20:30:00+00', '2026-06-27 21:00:00+00')
+('Croatia', 'Ghana', '2026-06-27 21:00:00+00', 'group', 'L', 'Lincoln Financial Field, Philadelphia', '2026-06-27 20:30:00+00', '2026-06-27 21:00:00+00'),
+
+-- Round of 32 (Knockout Stage)
+('TBD', 'TBD', '2026-06-28 19:00:00+00', 'round_of_32', 'R32', 'SoFi Stadium, Los Angeles', '2026-06-28 18:30:00+00', '2026-06-28 19:00:00+00'),
+('TBD', 'TBD', '2026-06-29 17:00:00+00', 'round_of_32', 'R32', 'NRG Stadium, Houston', '2026-06-29 16:30:00+00', '2026-06-29 17:00:00+00'),
+('TBD', 'TBD', '2026-06-29 20:30:00+00', 'round_of_32', 'R32', 'Gillette Stadium, Boston', '2026-06-29 20:00:00+00', '2026-06-29 20:30:00+00'),
+('TBD', 'TBD', '2026-06-30 01:00:00+00', 'round_of_32', 'R32', 'Estadio BBVA, Monterrey', '2026-06-30 00:30:00+00', '2026-06-30 01:00:00+00'),
+('TBD', 'TBD', '2026-06-30 17:00:00+00', 'round_of_32', 'R32', 'AT&T Stadium, Dallas', '2026-06-30 16:30:00+00', '2026-06-30 17:00:00+00'),
+('TBD', 'TBD', '2026-06-30 21:00:00+00', 'round_of_32', 'R32', 'MetLife Stadium, New York/New Jersey', '2026-06-30 20:30:00+00', '2026-06-30 21:00:00+00'),
+('TBD', 'TBD', '2026-07-01 01:00:00+00', 'round_of_32', 'R32', 'Estadio Azteca, Mexico City', '2026-07-01 00:30:00+00', '2026-07-01 01:00:00+00'),
+('TBD', 'TBD', '2026-07-01 16:00:00+00', 'round_of_32', 'R32', 'Mercedes-Benz Stadium, Atlanta', '2026-07-01 15:30:00+00', '2026-07-01 16:00:00+00'),
+('TBD', 'TBD', '2026-07-01 20:00:00+00', 'round_of_32', 'R32', 'Lumen Field, Seattle', '2026-07-01 19:30:00+00', '2026-07-01 20:00:00+00'),
+('TBD', 'TBD', '2026-07-02 00:00:00+00', 'round_of_32', 'R32', E'Levi\'s Stadium, San Francisco Bay Area', '2026-07-01 23:30:00+00', '2026-07-02 00:00:00+00'),
+('TBD', 'TBD', '2026-07-02 19:00:00+00', 'round_of_32', 'R32', 'SoFi Stadium, Los Angeles', '2026-07-02 18:30:00+00', '2026-07-02 19:00:00+00'),
+('TBD', 'TBD', '2026-07-02 23:00:00+00', 'round_of_32', 'R32', 'BMO Field, Toronto', '2026-07-02 22:30:00+00', '2026-07-02 23:00:00+00'),
+('TBD', 'TBD', '2026-07-03 00:00:00+00', 'round_of_32', 'R32', 'BC Place, Vancouver', '2026-07-02 23:30:00+00', '2026-07-03 00:00:00+00'),
+('TBD', 'TBD', '2026-07-03 18:00:00+00', 'round_of_32', 'R32', 'AT&T Stadium, Dallas', '2026-07-03 17:30:00+00', '2026-07-03 18:00:00+00'),
+('TBD', 'TBD', '2026-07-03 22:00:00+00', 'round_of_32', 'R32', 'Hard Rock Stadium, Miami', '2026-07-03 21:30:00+00', '2026-07-03 22:00:00+00'),
+('TBD', 'TBD', '2026-07-04 01:30:00+00', 'round_of_32', 'R32', 'Arrowhead Stadium, Kansas City', '2026-07-04 01:00:00+00', '2026-07-04 01:30:00+00'),
+
+-- Round of 16
+('TBD', 'TBD', '2026-07-04 17:00:00+00', 'round_of_16', 'R16', 'NRG Stadium, Houston', '2026-07-04 16:30:00+00', '2026-07-04 17:00:00+00'),
+('TBD', 'TBD', '2026-07-04 21:00:00+00', 'round_of_16', 'R16', 'Lincoln Financial Field, Philadelphia', '2026-07-04 20:30:00+00', '2026-07-04 21:00:00+00'),
+('TBD', 'TBD', '2026-07-05 20:00:00+00', 'round_of_16', 'R16', 'MetLife Stadium, New York/New Jersey', '2026-07-05 19:30:00+00', '2026-07-05 20:00:00+00'),
+('TBD', 'TBD', '2026-07-06 00:00:00+00', 'round_of_16', 'R16', 'Estadio Azteca, Mexico City', '2026-07-05 23:30:00+00', '2026-07-06 00:00:00+00'),
+('TBD', 'TBD', '2026-07-06 19:00:00+00', 'round_of_16', 'R16', 'AT&T Stadium, Dallas', '2026-07-06 18:30:00+00', '2026-07-06 19:00:00+00'),
+('TBD', 'TBD', '2026-07-07 00:00:00+00', 'round_of_16', 'R16', 'Lumen Field, Seattle', '2026-07-06 23:30:00+00', '2026-07-07 00:00:00+00'),
+('TBD', 'TBD', '2026-07-07 16:00:00+00', 'round_of_16', 'R16', 'Mercedes-Benz Stadium, Atlanta', '2026-07-07 15:30:00+00', '2026-07-07 16:00:00+00'),
+('TBD', 'TBD', '2026-07-07 20:00:00+00', 'round_of_16', 'R16', 'BC Place, Vancouver', '2026-07-07 19:30:00+00', '2026-07-07 20:00:00+00'),
+
+-- Quarterfinals
+('TBD', 'TBD', '2026-07-09 20:00:00+00', 'quarterfinal', 'QF', 'Gillette Stadium, Boston', '2026-07-09 19:30:00+00', '2026-07-09 20:00:00+00'),
+('TBD', 'TBD', '2026-07-10 19:00:00+00', 'quarterfinal', 'QF', 'SoFi Stadium, Los Angeles', '2026-07-10 18:30:00+00', '2026-07-10 19:00:00+00'),
+('TBD', 'TBD', '2026-07-11 21:00:00+00', 'quarterfinal', 'QF', 'Hard Rock Stadium, Miami', '2026-07-11 20:30:00+00', '2026-07-11 21:00:00+00'),
+('TBD', 'TBD', '2026-07-12 01:00:00+00', 'quarterfinal', 'QF', 'Arrowhead Stadium, Kansas City', '2026-07-11 23:30:00+00', '2026-07-12 01:00:00+00'),
+
+-- Semifinals
+('TBD', 'TBD', '2026-07-14 19:00:00+00', 'semifinal', 'SF', 'AT&T Stadium, Dallas', '2026-07-14 18:30:00+00', '2026-07-14 19:00:00+00'),
+('TBD', 'TBD', '2026-07-15 19:00:00+00', 'semifinal', 'SF', 'Mercedes-Benz Stadium, Atlanta', '2026-07-15 18:30:00+00', '2026-07-15 19:00:00+00'),
+
+-- Third-place match
+('TBD', 'TBD', '2026-07-18 21:00:00+00', 'third_place', '3rd', 'Hard Rock Stadium, Miami', '2026-07-18 20:30:00+00', '2026-07-18 21:00:00+00'),
+
+-- Final
+('TBD', 'TBD', '2026-07-19 19:00:00+00', 'final', 'F', 'MetLife Stadium, New York/New Jersey', '2026-07-19 18:30:00+00', '2026-07-19 19:00:00+00')
 ON CONFLICT DO NOTHING;

@@ -60,8 +60,8 @@ export default async function MatchesPage() {
                   <CardContent>
                     <div className="space-y-3">
                       <div className="flex justify-between text-sm text-gray-600">
-                        <span>Stage: {match.stage}</span>
-                        <span>Group: {match.group_label}</span>
+                        <span className="capitalize">{match.stage.replace('_', ' ')}</span>
+                        {match.group_label && <span>Group: {match.group_label}</span>}
                       </div>
                       <div className="text-sm text-gray-600">
                         {new Date(match.kickoff_time).toLocaleDateString()} at{' '}
@@ -72,6 +72,11 @@ export default async function MatchesPage() {
                       </div>
                       {match.venue && (
                         <div className="text-sm text-gray-600">{match.venue}</div>
+                      )}
+                      {(match.home_team === 'TBD' || match.away_team === 'TBD') && (
+                        <div className="text-xs text-blue-600 bg-blue-50 px-2 py-1 rounded">
+                          Teams to be determined
+                        </div>
                       )}
                       <div className="pt-3 border-t">
                         <div className="text-sm text-orange-600 mb-2">
