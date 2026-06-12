@@ -43,6 +43,15 @@ export default function RegisterPage() {
 
         if (profileError) throw profileError
 
+        // Auto-add user to global league
+        const { error: leagueError } = await supabase.from('league_members').insert({
+          league_id: '00000000-0000-0000-0000-000000000001',
+          user_id: authData.user.id,
+          role: 'member',
+        })
+
+        if (leagueError) throw leagueError
+
         router.push('/dashboard')
         router.refresh()
       }

@@ -37,31 +37,10 @@ export default function MatchDetailPage() {
   }
 
   const fetchUserLeagues = async () => {
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return
-
-    const { data } = await supabase
-      .from('league_members')
-      .select(`
-        league_id,
-        leagues (
-          id,
-          name
-        )
-      `)
-      .eq('user_id', user.id)
-
-    if (data) {
-      const leagueList = data.map((item: any) => ({
-        id: item.leagues.id,
-        name: item.leagues.name,
-      }))
-      setLeagues(leagueList)
-      if (leagueList.length > 0) {
-        setSelectedLeague(leagueList[0].id)
-        fetchExistingPrediction(leagueList[0].id)
-      }
-    }
+    // Use global league only
+    const globalLeagueId = '00000000-0000-0000-0000-000000000001'
+    setSelectedLeague(globalLeagueId)
+    fetchExistingPrediction(globalLeagueId)
   }
 
   const fetchExistingPrediction = async (leagueId: string) => {
@@ -220,26 +199,6 @@ export default function MatchDetailPage() {
               )}
 
               <form onSubmit={handleSubmit} className="space-y-6">
-                {leagues.length > 1 && (
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Select League *
-                    </label>
-                    <Select value={selectedLeague} onValueChange={handleLeagueChange}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a league" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {leagues.map((league) => (
-                          <SelectItem key={league.id} value={league.id}>
-                            {league.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                )}
-
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">

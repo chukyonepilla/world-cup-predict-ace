@@ -3,6 +3,8 @@ import { redirect } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import Link from 'next/link'
 
+const GLOBAL_LEAGUE_ID = '00000000-0000-0000-0000-000000000001'
+
 export default async function MatchesPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -10,14 +12,6 @@ export default async function MatchesPage() {
   if (!user) {
     redirect('/login')
   }
-
-  // Fetch user's leagues
-  const { data: leagues } = await supabase
-    .from('league_members')
-    .select('league_id')
-    .eq('user_id', user.id)
-
-  const leagueIds = leagues?.map((l: any) => l.league_id) || []
 
   // Fetch upcoming matches
   const { data: matches } = await supabase
