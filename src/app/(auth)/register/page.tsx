@@ -1,9 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { registerUser } from '@/app/actions/register'
 
 export default function RegisterPage() {
   const [email, setEmail] = useState('')
@@ -12,52 +12,27 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const router = useRouter()
-  const supabase = createClient()
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError('')
 
-    try {
-      // Create auth user
-      const { data: authData, error: authError } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            display_name: displayName,
-          },
-        },
-      })
+    const formData = new FormData()
+    formData.append('email', email)
+    formData.append('password', password)
+    formData.append('displayName', displayName)
 
-      if (authError) throw authError
+    const result = await registerUser(formData)
 
-      if (authData.user) {
-        // Create user profile in users table
-        const { error: profileError } = await supabase.from('users').insert({
-          id: authData.user.id,
-          email: authData.user.email!,
-          display_name: displayName,
-        })
-
-        if (profileError) throw profileError
-
-        // Auto-add user to global league (ignore error if league doesn't exist yet)
-        await supabase.from('league_members').insert({
-          league_id: '00000000-0000-0000-0000-000000000001',
-          user_id: authData.user.id,
-          role: 'member',
-        })
-
-        router.push('/dashboard')
-        router.refresh()
-      }
-    } catch (error: any) {
-      setError(error.message)
-    } finally {
-      setLoading(false)
+    if (result.success) {
+      router.push('/dashboard')
+      router.refresh()
+    } else {
+      setError(result.error || 'Registration failed')
     }
+
+    setLoading(false)
   }
 
   return (
