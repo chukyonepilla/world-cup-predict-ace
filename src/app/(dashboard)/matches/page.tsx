@@ -60,7 +60,14 @@ export default async function MatchesPage() {
                   <CardContent>
                     <div className="space-y-3">
                       <div className="flex justify-between text-sm text-gray-600">
-                        <span className="capitalize">{match.stage.replace('_', ' ')}</span>
+                        <span className="capitalize">
+                          {match.stage === 'round_of_32' ? 'Round of 32' :
+                           match.stage === 'round16' ? 'Round of 16' :
+                           match.stage === 'quarter' ? 'Quarterfinal' :
+                           match.stage === 'semi' ? 'Semifinal' :
+                           match.stage === 'third_place' ? 'Third Place' :
+                           match.stage.replace('_', ' ')}
+                        </span>
                         {match.group_label && <span>Group: {match.group_label}</span>}
                       </div>
                       <div className="text-sm text-gray-600">
