@@ -28,9 +28,13 @@ CREATE POLICY "Users can update own profile"
   ON users FOR UPDATE
   USING (auth.uid() = id)
   WITH CHECK (
-    auth.uid() = id 
+    auth.uid() = id
     AND is_admin = (SELECT is_admin FROM users WHERE id = auth.uid())
   );
+
+CREATE POLICY "Users can insert own profile"
+  ON users FOR INSERT
+  WITH CHECK (auth.uid() = id);
 
 -- Leagues table policies
 CREATE POLICY "Anyone can read league by code"

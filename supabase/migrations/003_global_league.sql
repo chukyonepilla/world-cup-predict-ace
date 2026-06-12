@@ -23,7 +23,7 @@ ON CONFLICT (id) DO NOTHING;
 
 -- Insert 2026 World Cup Group Stage Matches (Actual Schedule)
 -- Times are in UTC (ET +4 hours during June/July, or +5 hours during DST)
--- Prediction window: Opens 10 hours before kickoff, closes 30 minutes before kickoff
+-- Prediction window: Opens 24 hours before kickoff, closes 30 minutes before kickoff
 INSERT INTO matches (home_team, away_team, kickoff_time, stage, group_label, venue, prediction_window_open, prediction_window_close) VALUES
 -- Group A
 ('Mexico', 'South Africa', '2026-06-11 16:00:00+00', 'group', 'A', 'Estadio Azteca, Mexico City', '2026-06-11 15:30:00+00', '2026-06-11 16:00:00+00'),
@@ -166,7 +166,7 @@ INSERT INTO matches (home_team, away_team, kickoff_time, stage, group_label, ven
 ('TBD', 'TBD', '2026-07-19 19:00:00+00', 'final', 'F', 'MetLife Stadium, New York/New Jersey', '2026-07-19 18:30:00+00', '2026-07-19 19:00:00+00')
 ON CONFLICT DO NOTHING;
 
--- Update prediction_window_open to 10 hours before kickoff for all matches
+-- Update prediction_window_open to 24 hours before kickoff for all matches
 UPDATE matches
-SET prediction_window_open = kickoff_time - INTERVAL '10 hours'
+SET prediction_window_open = kickoff_time - INTERVAL '24 hours'
 WHERE prediction_window_open IS NOT NULL;
