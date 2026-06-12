@@ -33,7 +33,7 @@ export interface PointsBreakdown {
 export function calculatePredictionPoints(
   prediction: Prediction,
   result: MatchResult,
-  stage: 'group' | 'round16' | 'quarter' | 'semi' | 'third_place' | 'final'
+  stage: 'group' | 'round_of_32' | 'round16' | 'quarter' | 'semi' | 'third_place' | 'final'
 ): PointsBreakdown {
   const breakdown: PointsBreakdown = {
     score_points: 0,
@@ -55,7 +55,7 @@ export function calculatePredictionPoints(
 
   // Check for exact score
   if (predictedHome === actualHome && predictedAway === actualAway) {
-    breakdown.score_points = 3
+    breakdown.score_points = 4 // 3 for exact score + 1 for correct outcome
     breakdown.is_exact_score = true
     breakdown.is_correct_outcome = true
   } else {
@@ -123,9 +123,9 @@ function getOutcome(homeScore: number, awayScore: number): 'home' | 'away' | 'dr
   return 'draw'
 }
 
-export function getMaxPoints(stage: 'group' | 'round16' | 'quarter' | 'semi' | 'third_place' | 'final'): number {
+export function getMaxPoints(stage: 'group' | 'round_of_32' | 'round16' | 'quarter' | 'semi' | 'third_place' | 'final'): number {
   if (stage === 'group') {
-    return 5 // 3 (score) + 2 (bonus)
+    return 6 // 1 (outcome) + 3 (exact score) + 2 (bonus)
   }
-  return 8 // 3 (score) + 2 (bonus) + 1 (extra time) + 1 (shootout) + 1 (winner)
+  return 9 // 1 (outcome) + 3 (exact score) + 2 (bonus) + 1 (extra time) + 1 (shootout) + 1 (winner)
 }

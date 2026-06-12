@@ -85,6 +85,13 @@ export default function MatchDetailPage() {
 
       if (!selectedLeague) throw new Error('Please select a league')
 
+      // Validate knockout predictions
+      if (match?.stage !== 'group') {
+        if (!extraTime) throw new Error('Extra Time prediction is required for knockout matches')
+        if (!penaltyShootout) throw new Error('Penalty Shootout prediction is required for knockout matches')
+        if (!eventualWinner) throw new Error('Eventual Winner prediction is required for knockout matches')
+      }
+
       const predictionData: any = {
         match_id: params.id,
         user_id: user.id,
@@ -97,9 +104,9 @@ export default function MatchDetailPage() {
 
       // Add knockout predictions if applicable
       if (match?.stage !== 'group') {
-        if (extraTime) predictionData.extra_time_prediction = extraTime === 'yes'
-        if (penaltyShootout) predictionData.penalty_shootout_prediction = penaltyShootout === 'yes'
-        if (eventualWinner) predictionData.eventual_winner = eventualWinner
+        predictionData.extra_time_prediction = extraTime === 'yes'
+        predictionData.penalty_shootout_prediction = penaltyShootout === 'yes'
+        predictionData.eventual_winner = eventualWinner
       }
 
       if (existingPrediction) {
@@ -232,6 +239,7 @@ export default function MatchDetailPage() {
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Bonus Prediction *
                   </label>
+                  <p className="text-xs text-gray-500 mb-2">Choose ONE bonus prediction (either penalty OR red card)</p>
                   <Select value={bonusType} onValueChange={(value: any) => setBonusType(value)}>
                     <SelectTrigger>
                       <SelectValue />
@@ -259,11 +267,16 @@ export default function MatchDetailPage() {
 
                 {isKnockout && (
                   <>
+                    <div className="bg-blue-50 p-3 rounded text-sm text-blue-800">
+                      <p className="font-medium mb-1">Knockout Stage Rules:</p>
+                      <p>Score predictions are based on 90-minute result only (extra time and penalties don't affect score prediction).</p>
+                    </div>
+
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Extra Time?
+                        Extra Time? *
                       </label>
-                      <Select value={extraTime} onValueChange={(value: any) => setExtraTime(value)}>
+                      <Select value={extraTime} onValueChange={(value: any) => setExtraTime(value)} required>
                         <SelectTrigger>
                           <SelectValue placeholder="Select" />
                         </SelectTrigger>
@@ -276,11 +289,12 @@ export default function MatchDetailPage() {
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Penalty Shootout?
+                        Penalty Shootout? *
                       </label>
                       <Select
                         value={penaltyShootout}
                         onValueChange={(value: any) => setPenaltyShootout(value)}
+                        required
                       >
                         <SelectTrigger>
                           <SelectValue placeholder="Select" />
@@ -294,9 +308,9 @@ export default function MatchDetailPage() {
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Eventual Winner
+                        Eventual Winner *
                       </label>
-                      <Select value={eventualWinner} onValueChange={(value: any) => setEventualWinner(value)}>
+                      <Select value={eventualWinner} onValueChange={(value: any) => setEventualWinner(value)} required>
                         <SelectTrigger>
                           <SelectValue placeholder="Select" />
                         </SelectTrigger>
