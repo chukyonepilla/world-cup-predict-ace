@@ -34,7 +34,7 @@ INSERT INTO matches (home_team, away_team, kickoff_time, stage, group_label, ven
 
 -- Group B
 ('Canada', 'Bosnia and Herzegovina', '2026-06-12 19:00:00+00', 'group', 'B', 'BMO Field, Toronto', '2026-06-12 18:30:00+00', '2026-06-12 19:00:00+00'),
-('Qatar', 'Switzerland', '2026-06-13 19:00:00+00', 'group', 'B', "Levi's Stadium, San Francisco Bay Area", '2026-06-13 18:30:00+00', '2026-06-13 19:00:00+00'),
+('Qatar', 'Switzerland', '2026-06-13 19:00:00+00', 'group', 'B', E'Levi\'s Stadium, San Francisco Bay Area', '2026-06-13 18:30:00+00', '2026-06-13 19:00:00+00'),
 ('Switzerland', 'Bosnia and Herzegovina', '2026-06-18 19:00:00+00', 'group', 'B', 'SoFi Stadium, Los Angeles', '2026-06-18 18:30:00+00', '2026-06-18 19:00:00+00'),
 ('Canada', 'Qatar', '2026-06-18 22:00:00+00', 'group', 'B', 'BC Place, Vancouver', '2026-06-18 21:30:00+00', '2026-06-18 22:00:00+00'),
 ('Switzerland', 'Canada', '2026-06-24 19:00:00+00', 'group', 'B', 'BC Place, Vancouver', '2026-06-24 18:30:00+00', '2026-06-24 19:00:00+00'),
@@ -52,9 +52,9 @@ INSERT INTO matches (home_team, away_team, kickoff_time, stage, group_label, ven
 ('USA', 'Paraguay', '2026-06-13 01:00:00+00', 'group', 'D', 'SoFi Stadium, Los Angeles', '2026-06-13 00:30:00+00', '2026-06-13 01:00:00+00'),
 ('Australia', 'Turkiye', '2026-06-14 04:00:00+00', 'group', 'D', 'BC Place, Vancouver', '2026-06-14 03:30:00+00', '2026-06-14 04:00:00+00'),
 ('USA', 'Australia', '2026-06-19 19:00:00+00', 'group', 'D', 'Lumen Field, Seattle', '2026-06-19 18:30:00+00', '2026-06-19 19:00:00+00'),
-('Turkiye', 'Paraguay', '2026-06-20 04:00:00+00', 'group', 'D', "Levi's Stadium, San Francisco Bay Area", '2026-06-20 03:30:00+00', '2026-06-20 04:00:00+00'),
+('Turkiye', 'Paraguay', '2026-06-20 04:00:00+00', 'group', 'D', E'Levi\'s Stadium, San Francisco Bay Area', '2026-06-20 03:30:00+00', '2026-06-20 04:00:00+00'),
 ('Turkiye', 'USA', '2026-06-26 02:00:00+00', 'group', 'D', 'SoFi Stadium, Los Angeles', '2026-06-26 01:30:00+00', '2026-06-26 02:00:00+00'),
-('Paraguay', 'Australia', '2026-06-26 02:00:00+00', 'group', 'D', "Levi's Stadium, San Francisco Bay Area", '2026-06-26 01:30:00+00', '2026-06-26 02:00:00+00'),
+('Paraguay', 'Australia', '2026-06-26 02:00:00+00', 'group', 'D', E'Levi\'s Stadium, San Francisco Bay Area', '2026-06-26 01:30:00+00', '2026-06-26 02:00:00+00'),
 
 -- Group E
 ('Germany', 'Curacao', '2026-06-14 17:00:00+00', 'group', 'E', 'NRG Stadium, Houston', '2026-06-14 16:30:00+00', '2026-06-14 17:00:00+00'),
@@ -98,9 +98,9 @@ INSERT INTO matches (home_team, away_team, kickoff_time, stage, group_label, ven
 
 -- Group J
 ('Argentina', 'Algeria', '2026-06-17 01:00:00+00', 'group', 'J', 'Arrowhead Stadium, Kansas City', '2026-06-17 00:30:00+00', '2026-06-17 01:00:00+00'),
-('Austria', 'Jordan', '2026-06-17 04:00:00+00', 'group', 'J', "Levi's Stadium, San Francisco Bay Area", '2026-06-17 03:30:00+00', '2026-06-17 04:00:00+00'),
+('Austria', 'Jordan', '2026-06-17 04:00:00+00', 'group', 'J', E'Levi\'s Stadium, San Francisco Bay Area', '2026-06-17 03:30:00+00', '2026-06-17 04:00:00+00'),
 ('Argentina', 'Austria', '2026-06-22 17:00:00+00', 'group', 'J', 'AT&T Stadium, Dallas', '2026-06-22 16:30:00+00', '2026-06-22 17:00:00+00'),
-('Jordan', 'Algeria', '2026-06-23 03:00:00+00', 'group', 'J', "Levi's Stadium, San Francisco Bay Area", '2026-06-23 02:30:00+00', '2026-06-23 03:00:00+00'),
+('Jordan', 'Algeria', '2026-06-23 03:00:00+00', 'group', 'J', E'Levi\'s Stadium, San Francisco Bay Area', '2026-06-23 02:30:00+00', '2026-06-23 03:00:00+00'),
 ('Algeria', 'Austria', '2026-06-28 02:00:00+00', 'group', 'J', 'Arrowhead Stadium, Kansas City', '2026-06-28 01:30:00+00', '2026-06-28 02:00:00+00'),
 ('Jordan', 'Argentina', '2026-06-28 02:00:00+00', 'group', 'J', 'AT&T Stadium, Dallas', '2026-06-28 01:30:00+00', '2026-06-28 02:00:00+00'),
 
