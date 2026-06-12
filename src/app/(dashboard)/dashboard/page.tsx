@@ -56,7 +56,7 @@ export default async function DashboardPage() {
                 View Matches
               </Link>
               <span className="text-sm">{user.email}</span>
-              <form action="/auth/signout" method="post">
+              <form action="/api/auth/signout" method="post">
                 <button
                   type="submit"
                   className="bg-green-700 hover:bg-green-600 px-4 py-2 rounded text-sm transition-colors"
