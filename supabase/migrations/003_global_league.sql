@@ -1,3 +1,13 @@
+-- Create a system user for the global league
+INSERT INTO users (id, email, display_name, is_admin)
+VALUES (
+  '00000000-0000-0000-0000-000000000001',
+  'system@worldcup2026.local',
+  'System',
+  true
+)
+ON CONFLICT (id) DO NOTHING;
+
 -- Create global league for 2026 World Cup
 INSERT INTO leagues (id, name, code, description, max_members, created_by, is_active)
 VALUES (
