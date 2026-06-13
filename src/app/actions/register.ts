@@ -35,12 +35,32 @@ export async function registerUser(formData: FormData) {
 
       if (profileError) throw profileError
 
+      // Ensure global league exists using service role
+      const GLOBAL_LEAGUE_ID = '00000000-0000-0000-0000-000000000001'
+      await serviceSupabase
+        .from('leagues')
+        .upsert({
+          id: GLOBAL_LEAGUE_ID,
+          name: 'Global League',
+          code: 'GLOBAL',
+          description: 'The official World Cup prediction league',
+          max_members: 10000,
+          created_by: authData.user.id,
+        }, { onConflict: 'id' })
+
       // Auto-add user to global league using service role (bypasses RLS)
-      await serviceSupabase.from('league_members').insert({
-        league_id: '00000000-0000-0000-0000-000000000001',
-        user_id: authData.user.id,
-        role: 'member',
-      })
+      try {
+        await serviceSupabase.from('league_members').insert({
+          league_id: GLOBAL_LEAGUE_ID,
+          user_id: authData.user.id,
+          role: 'member',
+        })
+      } catch (err: any) {
+        // Ignore duplicate key errors (user already in league)
+        if (err.code !== '23505') {
+          throw err
+        }
+      }
 
       revalidatePath('/dashboard')
       return { success: true }
