@@ -11,12 +11,14 @@ export default function RegisterPage() {
   const [displayName, setDisplayName] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
   const router = useRouter()
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError('')
+    setSuccess('')
 
     const formData = new FormData()
     formData.append('email', email)
@@ -26,8 +28,11 @@ export default function RegisterPage() {
     const result = await registerUser(formData)
 
     if (result.success) {
-      router.push('/dashboard')
-      router.refresh()
+      setSuccess('Registration successful! Your account has been created. You can now sign in.')
+      // Clear form
+      setEmail('')
+      setPassword('')
+      setDisplayName('')
     } else {
       setError(result.error || 'Registration failed')
     }
@@ -56,6 +61,12 @@ export default function RegisterPage() {
           {error && (
             <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded">
               {error}
+            </div>
+          )}
+
+          {success && (
+            <div className="mb-4 p-3 bg-green-50 border border-green-200 text-green-700 rounded">
+              {success}
             </div>
           )}
 
