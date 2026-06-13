@@ -12,13 +12,15 @@ export async function registerUser(formData: FormData) {
   const serviceSupabase = await createServiceClient()
 
   try {
-    // Create auth user using service role to bypass email confirmation for testing
-    const { data: authData, error: authError } = await serviceSupabase.auth.admin.createUser({
+    // Create auth user with email confirmation
+    const { data: authData, error: authError } = await supabase.auth.signUp({
       email,
       password,
-      email_confirm: true, // Auto-confirm email
-      user_metadata: {
-        display_name: displayName,
+      options: {
+        data: {
+          display_name: displayName,
+        },
+        emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/auth/callback`,
       },
     })
 

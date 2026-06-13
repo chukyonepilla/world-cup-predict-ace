@@ -28,7 +28,7 @@ export default function RegisterPage() {
     const result = await registerUser(formData)
 
     if (result.success) {
-      setSuccess('Registration successful! Your account has been created. You can now sign in.')
+      setSuccess('Registration successful! Please check your email to confirm your account.')
       // Clear form
       setEmail('')
       setPassword('')
