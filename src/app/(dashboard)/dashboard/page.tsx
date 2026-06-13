@@ -35,7 +35,7 @@ export default async function DashboardPage() {
     .eq('id', user.id)
     .single()
 
-  const displayName = userProfile?.display_name || user.email?.split('@')[0] || 'Pundit'
+  const displayName = userProfile?.display_name || 'Pundit'
 
   // Fetch user's ranking in global league
   const { data: ranking } = await supabase
@@ -117,11 +117,15 @@ export default async function DashboardPage() {
             </li>
             <li className="flex items-start gap-2">
               <span className="text-green-600 mt-1">✓</span>
-              <span>Predict the exact score for both teams (e.g., 2-1, 3-0)</span>
+              <span>Predict the <strong>exact score</strong> for both teams (e.g., 2-1, 3-0)</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-green-600 mt-1">✓</span>
-              <span><strong>Exact score</strong> = 10 points | <strong>Correct outcome</strong> = 5 points | <strong>Bonus</strong> = 3 points</span>
+              <span>Make a <strong>bonus prediction</strong>: Will there be a penalty OR a red card?</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-green-600 mt-1">✓</span>
+              <span><strong>Knockout stage only</strong>: Predict extra time, penalty shootout, and eventual winner</span>
             </li>
             <li className="flex items-start gap-2">
               <span className="text-green-600 mt-1">✓</span>
@@ -129,7 +133,7 @@ export default async function DashboardPage() {
             </li>
             <li className="flex items-start gap-2">
               <span className="text-green-600 mt-1">✓</span>
-              <span>Climb the leaderboard by making accurate predictions!</span>
+              <span>Points awarded for exact scores, correct outcomes, and correct bonus predictions!</span>
             </li>
           </ul>
         </div>
@@ -202,6 +206,14 @@ export default async function DashboardPage() {
               <h3 className="text-lg md:text-xl font-semibold text-gray-900 mb-2">Leaderboard</h3>
               <p className="text-gray-600 text-sm md:text-base">See how you rank against other predictors</p>
             </div>
+          </Link>
+        </div>
+
+        {/* My Predictions Section */}
+        <div className="bg-white rounded-lg shadow p-4 md:p-6 mb-6 md:mb-8">
+          <h3 className="text-lg md:text-xl font-semibold text-gray-900 mb-4">My Predictions</h3>
+          <Link href="/my-predictions" className="inline-block bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors text-sm md:text-base">
+            View All My Predictions
           </Link>
         </div>
 

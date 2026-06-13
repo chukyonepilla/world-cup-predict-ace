@@ -119,10 +119,45 @@ export default function MatchDetailPage() {
       } else {
         const { error } = await supabase.from('predictions').insert(predictionData)
 
-        if (error) throw error
+        if (error) {
+          // Check for unique constraint violation (already predicted)
+          if (error.code === '23505') {
+            throw new Error('Already predicted. Review if need changes')
+          }
+          throw error
+        }
       }
 
       router.push('/matches')
+    } catch (error: any) {
+      setError(error.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleDelete = async () => {
+    if (!existingPrediction) return
+    if (!confirm('Are you sure you want to delete this prediction?')) return
+
+    setLoading(true)
+    setError('')
+
+    try {
+      const { error } = await supabase
+        .from('predictions')
+        .delete()
+        .eq('id', existingPrediction.id)
+
+      if (error) throw error
+
+      setExistingPrediction(null)
+      setHomeScore('')
+      setAwayScore('')
+      setBonusPrediction('yes')
+      setExtraTime('')
+      setPenaltyShootout('')
+      setEventualWinner('')
     } catch (error: any) {
       setError(error.message)
     } finally {
@@ -135,18 +170,19 @@ export default function MatchDetailPage() {
   }
 
   const isKnockout = match.stage !== 'group'
-  const windowOpen = new Date(match.prediction_window_open) <= new Date()
-  const windowClosed = new Date(match.prediction_window_close) <= new Date()
+  const now = new Date()
+  const windowOpen = new Date(match.kickoff_time) <= new Date(now.getTime() + 24 * 60 * 60 * 1000) && new Date(match.kickoff_time) > new Date(now.getTime() + 30 * 60 * 1000)
+  const windowClosed = new Date(match.kickoff_time) <= new Date(now.getTime() + 30 * 60 * 1000)
 
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-green-800 text-white shadow">
-        <div className="max-w-7xl mx-auto px-4 py-6">
-          <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold">Match Prediction</h1>
+        <div className="max-w-7xl mx-auto px-4 py-4 md:py-6">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <h1 className="text-xl md:text-2xl font-bold">Match Prediction</h1>
             <a
               href="/matches"
-              className="text-green-200 hover:text-white transition-colors"
+              className="text-green-200 hover:text-white transition-colors text-sm md:text-base"
             >
               ← Back to Matches
             </a>
@@ -175,17 +211,17 @@ export default function MatchDetailPage() {
               <div className="pt-2 border-t">
                 {!windowOpen && (
                   <p className="text-orange-600 font-medium">
-                    Predictions open {new Date(match.prediction_window_open).toLocaleString()}
+                    Predictions open 24 hours before kickoff
                   </p>
                 )}
                 {windowClosed && (
                   <p className="text-red-600 font-medium">
-                    Predictions closed - deadline passed
+                    Predictions closed - deadline passed (30 minutes before kickoff)
                   </p>
                 )}
                 {windowOpen && !windowClosed && (
                   <p className="text-green-600 font-medium">
-                    Predictions open until {new Date(match.prediction_window_close).toLocaleString()}
+                    Predictions open until 30 minutes before kickoff
                   </p>
                 )}
               </div>
@@ -323,9 +359,22 @@ export default function MatchDetailPage() {
                   </>
                 )}
 
-                <Button type="submit" disabled={loading} className="w-full">
-                  {loading ? 'Submitting...' : existingPrediction ? 'Update Prediction' : 'Submit Prediction'}
-                </Button>
+                <div className="flex gap-3">
+                  <Button type="submit" disabled={loading} className="flex-1">
+                    {loading ? 'Submitting...' : existingPrediction ? 'Update Prediction' : 'Submit Prediction'}
+                  </Button>
+                  {existingPrediction && (
+                    <Button
+                      type="button"
+                      onClick={handleDelete}
+                      disabled={loading}
+                      variant="destructive"
+                      className="flex-1"
+                    >
+                      {loading ? 'Deleting...' : 'Delete'}
+                    </Button>
+                  )}
+                </div>
               </form>
             </CardContent>
           </Card>
