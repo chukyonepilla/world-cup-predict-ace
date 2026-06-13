@@ -16,11 +16,12 @@ export default async function MatchesPage() {
     redirect('/login')
   }
 
-  // Fetch upcoming matches (still open for prediction)
+  // Fetch upcoming matches (kickoff between 30 mins and 24 hours from now)
   const { data: matches } = await supabase
     .from('matches')
     .select('*')
-    .gt('prediction_window_close', new Date().toISOString())
+    .gt('kickoff_time', new Date(Date.now() + 30 * 60 * 1000).toISOString())
+    .lte('kickoff_time', new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString())
     .order('kickoff_time', { ascending: true })
     .limit(50)
 
@@ -49,9 +50,9 @@ export default async function MatchesPage() {
         {matches && matches.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {matches.map((match: any) => {
-              const timeUntilClose = new Date(match.prediction_window_close).getTime() - new Date().getTime()
-              const minutesUntilClose = Math.floor(timeUntilClose / (1000 * 60))
-              const hoursUntilClose = Math.floor(minutesUntilClose / 60)
+              const timeUntilKickoff = new Date(match.kickoff_time).getTime() - new Date().getTime()
+              const minutesUntilKickoff = Math.floor(timeUntilKickoff / (1000 * 60))
+              const hoursUntilKickoff = Math.floor(minutesUntilKickoff / 60)
 
               return (
                 <Card key={match.id} className="hover:shadow-lg transition-shadow">
@@ -90,9 +91,9 @@ export default async function MatchesPage() {
                       )}
                       <div className="pt-3 border-t">
                         <div className="text-sm text-orange-600 mb-2">
-                          {hoursUntilClose > 0
-                            ? `Closes in ${hoursUntilClose}h ${minutesUntilClose % 60}m`
-                            : `Closes in ${minutesUntilClose}m`}
+                          {hoursUntilKickoff > 0
+                            ? `Kickoff in ${hoursUntilKickoff}h ${minutesUntilKickoff % 60}m`
+                            : `Kickoff in ${minutesUntilKickoff}m`}
                         </div>
                         <Link
                           href={`/matches/${match.id}`}
