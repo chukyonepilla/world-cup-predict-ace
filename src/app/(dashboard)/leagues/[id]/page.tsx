@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { notFound, redirect } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -12,6 +12,7 @@ interface PageProps {
 export default async function LeagueDetailPage({ params }: PageProps) {
   const { id } = await params
   const supabase = await createClient()
+  const serviceSupabase = await createServiceClient()
   const { data: { user } } = await supabase.auth.getUser()
 
   if (!user) {
@@ -26,23 +27,22 @@ export default async function LeagueDetailPage({ params }: PageProps) {
     .single()
 
   if (leagueError || !league) {
-    console.error('League error:', leagueError)
-    // If it's the global league and doesn't exist, create it
+    // If it's the global league and doesn't exist, create it using service role
     if (id === '00000000-0000-0000-0000-000000000001') {
-      const { error: createError } = await supabase
+      const { error: createError } = await serviceSupabase
         .from('leagues')
         .insert({
           id: id,
           name: 'Global League',
           code: 'GLOBAL',
           description: 'The official World Cup prediction league',
-          max_members: 1000,
+          max_members: 10000,
           created_by: user.id,
         })
       
       if (!createError) {
-        // Add user as member
-        await supabase
+        // Add user as member using service role
+        await serviceSupabase
           .from('league_members')
           .insert({
             league_id: id,
@@ -71,6 +71,7 @@ export default async function LeagueDetailPage({ params }: PageProps) {
 
 async function LeagueContent({ league, user }: { league: any, user: any }) {
   const supabase = await createClient()
+  const serviceSupabase = await createServiceClient()
   const id = league.id
 
   // Check if user is a member
@@ -82,9 +83,9 @@ async function LeagueContent({ league, user }: { league: any, user: any }) {
     .single()
 
   if (!membership) {
-    // Auto-add user to global league
+    // Auto-add user to global league using service role
     if (id === '00000000-0000-0000-0000-000000000001') {
-      await supabase
+      await serviceSupabase
         .from('league_members')
         .insert({
           league_id: id,
