@@ -32,11 +32,14 @@ export async function registerUser(formData: FormData) {
         display_name: displayName,
       })
 
-      if (profileError) throw profileError
+      if (profileError) {
+        console.error('Profile creation error:', profileError)
+        throw profileError
+      }
 
       // Ensure global league exists using service role
       const GLOBAL_LEAGUE_ID = '00000000-0000-0000-0000-000000000001'
-      await serviceSupabase
+      const { error: leagueError } = await serviceSupabase
         .from('leagues')
         .upsert({
           id: GLOBAL_LEAGUE_ID,
@@ -46,17 +49,30 @@ export async function registerUser(formData: FormData) {
           max_members: 10000,
           created_by: authData.user.id,
         }, { onConflict: 'id' })
+      
+      if (leagueError) {
+        console.error('League creation error:', leagueError)
+        throw leagueError
+      }
 
       // Auto-add user to global league using service role (bypasses RLS)
       try {
-        await serviceSupabase.from('league_members').insert({
+        const { error: memberError } = await serviceSupabase.from('league_members').insert({
           league_id: GLOBAL_LEAGUE_ID,
           user_id: authData.user.id,
           role: 'member',
         })
+        
+        if (memberError) {
+          console.error('League member addition error:', memberError)
+          if (memberError.code !== '23505') {
+            throw memberError
+          }
+        }
       } catch (err: any) {
         // Ignore duplicate key errors (user already in league)
         if (err.code !== '23505') {
+          console.error('League member insertion error:', err)
           throw err
         }
       }
