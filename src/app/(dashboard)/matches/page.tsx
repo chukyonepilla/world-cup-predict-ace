@@ -5,6 +5,9 @@ import Link from 'next/link'
 
 const GLOBAL_LEAGUE_ID = '00000000-0000-0000-0000-000000000001'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export default async function MatchesPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
