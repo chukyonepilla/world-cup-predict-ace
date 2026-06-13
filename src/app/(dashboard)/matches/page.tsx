@@ -17,17 +17,13 @@ export default async function MatchesPage() {
   }
 
   // Fetch upcoming matches (kickoff between 30 mins and 24 hours from now)
-  const { data: matches, error } = await supabase
+  const { data: matches } = await supabase
     .from('matches')
     .select('*')
     .gt('kickoff_time', new Date(Date.now() + 30 * 60 * 1000).toISOString())
     .lte('kickoff_time', new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString())
     .order('kickoff_time', { ascending: true })
     .limit(50)
-
-  if (error) {
-    console.error('Error fetching matches:', error)
-  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -46,17 +42,9 @@ export default async function MatchesPage() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 py-8">
-        {error && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded">
-            <p className="text-red-800">Error fetching matches: {error.message}</p>
-          </div>
-        )}
         <div className="mb-6">
           <h2 className="text-2xl font-bold text-gray-900">Upcoming Matches</h2>
           <p className="text-gray-600">Predict scores before the deadline</p>
-          <p className="text-xs text-gray-500 mt-1">
-            Debug: Found {matches?.length || 0} matches. Current time: {new Date().toISOString()}
-          </p>
         </div>
 
         {matches && matches.length > 0 ? (
