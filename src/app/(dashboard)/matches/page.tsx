@@ -141,12 +141,12 @@ export default async function MatchesPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-green-800 text-white shadow">
-        <div className="max-w-7xl mx-auto px-4 py-6">
-          <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold">Matches</h1>
+        <div className="max-w-7xl mx-auto px-4 py-4 md:py-6">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <h1 className="text-xl md:text-2xl font-bold">Matches</h1>
             <a
               href="/dashboard"
-              className="text-green-200 hover:text-white transition-colors"
+              className="text-green-200 hover:text-white transition-colors text-sm md:text-base"
             >
               ← Back to Dashboard
             </a>
