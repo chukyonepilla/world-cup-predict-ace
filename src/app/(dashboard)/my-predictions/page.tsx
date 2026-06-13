@@ -17,7 +17,7 @@ export default async function MyPredictionsPage() {
   }
 
   // Fetch all user's predictions with match details
-  const { data: predictions } = await supabase
+  const { data: predictions, error } = await supabase
     .from('predictions')
     .select('*, matches(*)')
     .eq('user_id', user.id)
@@ -44,6 +44,11 @@ export default async function MyPredictionsPage() {
         <div className="mb-6">
           <h2 className="text-2xl font-bold text-gray-900">All Your Predictions</h2>
           <p className="text-gray-600">Review your predictions and track your results</p>
+          {error && (
+            <div className="mt-2 p-3 bg-red-50 border border-red-200 text-red-700 rounded text-sm">
+              Error loading predictions: {error.message}
+            </div>
+          )}
         </div>
 
         {predictions && predictions.length > 0 ? (

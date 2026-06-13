@@ -22,6 +22,7 @@ export default function MatchDetailPage() {
   const [existingPrediction, setExistingPrediction] = useState<any>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
   const params = useParams()
   const router = useRouter()
   const supabase = createClient()
@@ -78,6 +79,7 @@ export default function MatchDetailPage() {
     e.preventDefault()
     setLoading(true)
     setError('')
+    setSuccess('')
 
     try {
       const { data: { user } } = await supabase.auth.getUser()
@@ -116,6 +118,7 @@ export default function MatchDetailPage() {
           .eq('id', existingPrediction.id)
 
         if (error) throw error
+        setSuccess('Prediction updated! Good luck! 🍀')
       } else {
         const { error } = await supabase.from('predictions').insert(predictionData)
 
@@ -126,9 +129,14 @@ export default function MatchDetailPage() {
           }
           throw error
         }
+        setSuccess('Prediction recorded! Good luck! 🍀')
       }
 
-      router.push('/matches')
+      // Refresh existing prediction
+      fetchExistingPrediction(selectedLeague)
+
+      // Clear success message after 3 seconds
+      setTimeout(() => setSuccess(''), 3000)
     } catch (error: any) {
       setError(error.message)
     } finally {
@@ -238,6 +246,12 @@ export default function MatchDetailPage() {
               {error && (
                 <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded">
                   {error}
+                </div>
+              )}
+
+              {success && (
+                <div className="mb-4 p-3 bg-green-50 border border-green-200 text-green-700 rounded">
+                  {success}
                 </div>
               )}
 
@@ -359,22 +373,9 @@ export default function MatchDetailPage() {
                   </>
                 )}
 
-                <div className="flex gap-3">
-                  <Button type="submit" disabled={loading} className="flex-1">
-                    {loading ? 'Submitting...' : existingPrediction ? 'Update Prediction' : 'Submit Prediction'}
-                  </Button>
-                  {existingPrediction && (
-                    <Button
-                      type="button"
-                      onClick={handleDelete}
-                      disabled={loading}
-                      variant="destructive"
-                      className="flex-1"
-                    >
-                      {loading ? 'Deleting...' : 'Delete'}
-                    </Button>
-                  )}
-                </div>
+                <Button type="submit" disabled={loading} className="w-full">
+                  {loading ? 'Submitting...' : existingPrediction ? 'Update Prediction' : 'Submit Prediction'}
+                </Button>
               </form>
             </CardContent>
           </Card>
